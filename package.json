@@ -1,0 +1,26 @@
+{
+  "name": "try-webpack",
+  "version": "0.0.1",
+  "description": "Trying out webpack",
+  "main": "./main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev-server": "webpack-dev-server"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "css-loader": "^0.23.1",
+    "jquery": "^2.2.2",
+    "sizzle": "^2.3.0",
+    "string-replace-loader": "^1.0.0",
+    "style-loader": "^0.13.1",
+    "webpack": "^1.12.14"
+  },
+  "devDependencies": {
+    "html-webpack-plugin": "^2.15.0",
+    "lodash": "^4.6.1",
+    "markdown-toc": "^0.12.5",
+    "webpack-dev-server": "^1.14.1"
+  }
+}
