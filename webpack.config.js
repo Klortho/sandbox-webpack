@@ -7,8 +7,8 @@ var dev = env == 'dev';
 // Different plugins for each environment
 var envPlugins = {
   dev: [
-    // You don't need this to use jQuery; this is just to put jQuery
-    // (as `$`) into the global scope, in the dev environment.
+    // Put jQuery into the global scope (as `$`) in the dev profile.
+    // Note that you don't need this to use jQuery.
     new webpack.ProvidePlugin({
       $: "jquery",
       jQuery: "jquery"
@@ -28,7 +28,7 @@ var plugins = commonPlugins.concat(envPlugins[env]);
 module.exports = {
   context: __dirname,
   devtool: dev ? "inline-sourcemap" : null,
-  entry: "./entry.js",
+  entry: "./app/entry.js",
   output: {
     path: __dirname,
     filename: "bundle.js"

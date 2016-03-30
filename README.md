@@ -1,10 +1,5 @@
 # webpack fun
 
-Next up, to figure out: how to include jquery, such that it is
-excluded from the pre-built bundle. I think I need to follow
-this tutorial: [webpack and jquery: include only the parts you 
-need](http://alexomara.com/blog/webpack-and-jquery-include-only-the-parts-you-need/).
-
 ## Get started
 
 Build this with
@@ -15,17 +10,48 @@ npm install
 webpack
 ```
 
-Then, bring up index.html in your browser.
+Verify that runs without errors, and bring up index.html in your browser.
 
-In your terminal, do this, so that changes to files cause the bundle to be
-rebuilt automatically:
+To run a local server that watches for changes, and automatically reloads
+the page.
+
+```
+npm run dev-server
+```
+
+That will give you a localhost:8080 URL; load that in your browser.
+See the next section, Webpack watch and dev server, for info on how this is 
+set up.
+
+
+## Webpack watch and dev server
+
+Using the `--watch` option will start a webpack service, that watches for 
+file changes, and rebuilds the bundle:
 
 ```
 webpack --watch
 ```
 
-Note that this won't cause auto-reload in the browser. To get
-that, you have to use webpack-dev-server.
+But this won't cause the browser page to auto-reload. To get
+that, install webpack-dev-server as a dev dependency:
+
+```
+npm install --save-dev webpack-dev-server
+```
+
+Then add this to your package.json, as one of the `scripts`:
+
+```json
+"dev-server": "webpack-dev-server"
+```
+
+With that, you can invoke the dev server with
+
+```
+npm run dev-server
+```
+
 
 
 ## Build profiles
@@ -44,32 +70,38 @@ var dev = env == 'dev';
 ## CSS
 
 You can include CSS files on your page just as though they were JavaScript
-modules, by using `require`. These will use a distinct module loader, however,
-and there are two ways to specify it. 
+modules, by using `require`. These will use a distinct module loader, however.
 
-You can use this special syntax in the `require` statement, and it will just
-work, with no changes to the webpack config:
+Install them with:
+
+```
+npm install --save-dev css-loader style-loader
+```
+
+There are two ways to specify to use these loaders for your CSS files.
+
+1: Use the following special syntax in the `require` statement, and it 
+will just work, with no changes to the webpack config:
 
 ```javascript
 require('!style!css!./style.css');
 ```
 
-Or, you can add a rule in the `loaders` section of webpack config, to tell it
+2: Add a rule in the `loaders` section of webpack config, to tell it
 to always use the CSS style loader when certain conditions are met. So, in
-your JS file:
+your JS file, put this:
 
 ```javascript
 require('./style.css');
 ```
 
-And add this into webpack.config.js:
+And in your webpack.config.js, add this:
 
 ```javascript
 loaders: [
   { test: /\.css$/, loader: "style!css" }
 ]
 ```
-
 
 
 
@@ -83,21 +115,30 @@ devtool: dev ? "inline-sourcemap" : null,
 
 ## jQuery
 
-So that jQuery will be added automatically whenever webpack sees
-`$` in the global context, you can add this:
+Add this to the project with:
 
 ```
-plugins: [
+npm install --save jquery
+```
+
+Then, include in your module with no fuss, no muss:
+
+```javascript
+var $ = require('jquery');
+$(function() {
   ...
-  new webpack.ProvidePlugin({
-    $: "jquery",
-    jQuery: "jquery"
-  })
-]
+});
 ```
 
-Note that I don't know what this buys you, really. It seems to me it
-would be better to always have a `require` whenever you're using a
-module like jquery. The above plugin does not, for example, put `$`
-into the global scope, or cause jQuery to be excluded from the built
-bundle.
+
+Some legacy libraries might depend on `jQuery` or `$` being in the global 
+scope. Or, you might want to have `$` available in the dev profile for 
+debugging. To accomplish this, add this plugin:
+
+```
+new webpack.ProvidePlugin({
+  $: "jquery",
+  jQuery: "jquery"
+})
+```
+
