@@ -1,37 +1,44 @@
-var env = process.env.NODE_ENV || 'dev';
-var debug = env !== 'prod';
 var webpack = require('webpack');
 
+// Support different build profiles, using environment variable
+var env = process.env.BUILD_PROFILE || 'dev';
+var dev = env == 'dev';
+
+// Different plugins for each environment
+var envPlugins = {
+  dev: [
+    // You don't need this to use jQuery; this is just to put jQuery
+    // (as `$`) into the global scope, in the dev environment.
+    new webpack.ProvidePlugin({
+      $: "jquery",
+      jQuery: "jquery"
+    })
+  ],
+  prod: [
+    new webpack.optimize.DedupePlugin(),
+    new webpack.optimize.OccurenceOrderPlugin(),
+    new webpack.optimize.UglifyJsPlugin({ mangle: false, sourcemap: false }),
+  ]
+};
+// Put common ones here
 var commonPlugins = [];
-var devPlugins = [
-  // You don't need this to use jQuery; this is just to put jQuery
-  // (as `$`) into the global scope, in the dev environment.
-  new webpack.ProvidePlugin({
-    $: "jquery",
-    jQuery: "jquery"
-  })
-];
-var prodPlugins = [
-  new webpack.optimize.DedupePlugin(),
-  new webpack.optimize.OccurenceOrderPlugin(),
-  new webpack.optimize.UglifyJsPlugin({ mangle: false, sourcemap: false }),
-];
-var plugins = commonPlugins.concat(
-  env == 'dev' ? devPlugins : prodPlugins
-);
+// The final list
+var plugins = commonPlugins.concat(envPlugins[env]);
 
 module.exports = {
   context: __dirname,
-  devtool: debug ? "inline-sourcemap" : null,
+  devtool: dev ? "inline-sourcemap" : null,
   entry: "./entry.js",
   output: {
     path: __dirname,
     filename: "bundle.js"
   },
   module: {
-    loaders: [
-      { test: /\.css$/, loader: "style!css" }
-    ]
+    // If we want to load CSS files without any special syntax in the require
+    // statements, then you can add this:
+    //loaders: [
+    //  { test: /\.css$/, loader: "style!css" }
+    //]
   },
   plugins: plugins,
 };

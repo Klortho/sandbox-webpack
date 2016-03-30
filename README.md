@@ -17,43 +17,60 @@ webpack
 
 Then, bring up index.html in your browser.
 
-To do development, use `webpack --watch`, and then you can make
-changes to files, and your bundle will be recompiled automatically.
-Note that it won't do auto-reload in the browser, though -- to get
+In your terminal, do this, so that changes to files cause the bundle to be
+rebuilt automatically:
+
+```
+webpack --watch
+```
+
+Note that this won't cause auto-reload in the browser. To get
 that, you have to use webpack-dev-server.
 
 
-## Build environment
+## Build profiles
 
-To distinguish between `dev` and `prod`, he uses this:
+To distinguish between `dev` and `prod`, use the following. Note that it should
+default to `dev`, so that someone cloning and trying out this module for the
+first time has no problem getting started.
 
+```javascript
+var env = process.env.BUILD_PROFILE || 'dev';
+// If you need a flag for a specific profile:
+var dev = env == 'dev';
 ```
-var debug = process.env.NODE_ENV !== "prod";
-```
 
-It is nice that it defaults to debug;
 
 ## CSS
 
-This line in webpack.config.js let's you "include" CSS files from
-you JS modules without having to use a \<link> element on the
-HTML page:
+You can include CSS files on your page just as though they were JavaScript
+modules, by using `require`. These will use a distinct module loader, however,
+and there are two ways to specify it. 
+
+You can use this special syntax in the `require` statement, and it will just
+work, with no changes to the webpack config:
 
 ```javascript
-    loaders: [
-      { test: /\.css$/, loader: "style!css" }
-    ]
+require('!style!css!./style.css');
 ```
 
-Just use this in your JS file:
+Or, you can add a rule in the `loaders` section of webpack config, to tell it
+to always use the CSS style loader when certain conditions are met. So, in
+your JS file:
 
 ```javascript
-require("./style.css");
+require('./style.css');
 ```
 
-Alternatively, instead of declaring the loader, you could use 
-`--module-bind 'css=style!css'` on the webpack command line (but I don't know
-why you would ever want to do that).
+And add this into webpack.config.js:
+
+```javascript
+loaders: [
+  { test: /\.css$/, loader: "style!css" }
+]
+```
+
+
 
 
 ## Sourcemaps
@@ -61,7 +78,7 @@ why you would ever want to do that).
 This line in webpack.config.js causes sourcemaps to be created:
 
 ```
-  devtool: debug ? "inline-sourcemap" : null,
+devtool: dev ? "inline-sourcemap" : null,
 ```
 
 ## jQuery
