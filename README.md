@@ -3,26 +3,21 @@
 Let's use this repository to explore how we could use Webpack to solve
 various common use-cases. See the to-do list at the end.
 
-
-
-
-
 <!-- toc -->
 
-* [Get started](#get-started)
-* [Webpack watch and dev server](#webpack-watch-and-dev-server)
-* [Build profiles](#build-profiles)
-* [CSS](#css)
-* [HTML](#html)
-* [Sourcemaps](#sourcemaps)
-* [jQuery](#jquery)
+- [Get started](#get-started)
+- [Webpack watch and dev server](#webpack-watch-and-dev-server)
+- [Build profiles](#build-profiles)
+- [CSS](#css)
+- [HTML](#html)
+- [Sourcemaps](#sourcemaps)
+- [jQuery](#jquery)
   * [Include just the bits you need](#include-just-the-bits-you-need)
-* [To do](#to-do)
+- [To do](#to-do)
 
-<!-- toc stop -->
+<!-- tocstop -->
 
-
-
+<a name='get-started'></a>
 ## Get started
 
 Build this with
@@ -45,7 +40,7 @@ npm run dev-server
 Load the URL that it gives you in your browser. (See the next section for
 info on how this works.)
 
-
+<a name='webpack-watch-and-dev-server'></a>
 ## Webpack watch and dev server
 
 Using the `--watch` option will start a webpack service, that watches for
@@ -74,6 +69,7 @@ Invoke it with:
 npm run dev-server
 ```
 
+<a name='build-profiles'></a>
 ## Build profiles
 
 To have two profiles `dev` and `prod`, use the following code. This will give
@@ -112,6 +108,7 @@ module.exports =
     });
 ```
 
+<a name='css'></a>
 ## CSS
 
 You can include CSS files on your page just as though they were JavaScript
@@ -148,6 +145,7 @@ loaders: [
 ]
 ```
 
+<a name='html'></a>
 ## HTML
 
 Install this plugin:
@@ -171,6 +169,7 @@ to dist. You can add template variables to it, but it might not even be
 necessary. By default, webpack inserts the a script tag for the bundle, right
 before the closing \<body> tag.
 
+<a name='sourcemaps'></a>
 ## Sourcemaps
 
 This line in webpack.config.js causes sourcemaps to be created:
@@ -179,6 +178,7 @@ This line in webpack.config.js causes sourcemaps to be created:
 devtool: dev ? "inline-sourcemap" : null,
 ```
 
+<a name='jquery'></a>
 ## jQuery
 
 Add this to the project with:
@@ -209,6 +209,7 @@ new webpack.ProvidePlugin({
 
 FIXME: what's an example of such a legacy library?
 
+<a name='include-just-the-bits-you-need'></a>
 ### Include just the bits you need
 
 jQuery is pretty big, and with a little work, you can get the size that is
@@ -251,7 +252,8 @@ require('jquery/src/core/init');
 require('jquery/src/manipulation');
 ```
 
-## <a name='to-do'></a>To do
+<a name='to-do'></a>
+## To do
 
 * Add an ES6 polyfill, whatwg-fetch, and use it to access github api,
   with whatwg-fetch -- basically, what this guy is doing at [about 7:15 in
