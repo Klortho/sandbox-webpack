@@ -10,12 +10,14 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "css-loader": "^0.23.1",
     "jquery": "^2.2.2",
+    "sizzle": "^2.3.0",
+    "string-replace-loader": "^1.0.0",
+    "style-loader": "^0.13.1",
     "webpack": "^1.12.14"
   },
   "devDependencies": {
-    "css-loader": "^0.23.1",
-    "style-loader": "^0.13.1",
     "webpack-dev-server": "^1.14.1"
   }
 }

@@ -130,7 +130,6 @@ $(function() {
 });
 ```
 
-
 Some legacy libraries might depend on `jQuery` or `$` being in the global 
 scope. Or, you might want to have `$` available in the dev profile for 
 debugging. To accomplish this, add this plugin:
@@ -141,4 +140,55 @@ new webpack.ProvidePlugin({
   jQuery: "jquery"
 })
 ```
+
+FIXME: what's an example of such a legacy library?
+
+### Include just the bits you need
+
+jQuery is pretty big, and with a little work, you can get the size that is 
+included in your bundle to be much smaller, by linking to the `src`, rather
+than the default, which resolves to `dist`. (See [this blog 
+post](http://alexomara.com/blog/webpack-and-jquery-include-only-the-parts-you-need/)).
+
+Install sizzle, which jQuery uses for its selectors:
+
+```
+npm install --save sizzle
+npm install --save string-replace-loader
+```
+
+To fix a bug, add the following to webpack.config.js:
+
+```javascript
+module: {
+  // This hack is needed to get around a bug in jquery's src distribution.
+  // See http://stackoverflow.com/a/35880094/1311716
+  preLoaders: [
+    { loader: 'string-replace',
+      test: /jquery\/src\/selector-sizzle\.js$/,
+      query: {
+        search: '../external/sizzle/dist/sizzle',
+        replace: 'sizzle'
+      }
+    }
+  ],
+},
+```
+
+Finally, in your modules that use jQuery, change the normal `require` to:
+
+```javascript
+// jquery, just the bits we're using. See
+// http://alexomara.com/blog/webpack-and-jquery-include-only-the-parts-you-need/
+var $ = require('jquery/src/core');
+require('jquery/src/core/init');
+require('jquery/src/manipulation');
+```
+
+
+
+
+
+
+
 

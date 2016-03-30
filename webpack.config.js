@@ -9,10 +9,10 @@ var envPlugins = {
   dev: [
     // Put jQuery into the global scope (as `$`) in the dev profile.
     // Note that you don't need this to use jQuery.
-    new webpack.ProvidePlugin({
-      $: "jquery",
-      jQuery: "jquery"
-    })
+    //new webpack.ProvidePlugin({
+    //  $: "jquery",
+    //  jQuery: "jquery"
+    //})
   ],
   prod: [
     new webpack.optimize.DedupePlugin(),
@@ -39,6 +39,18 @@ module.exports = {
     //loaders: [
     //  { test: /\.css$/, loader: "style!css" }
     //]
+
+    // This hack is needed to get around a bug in jquery's src distribution.
+    // See http://stackoverflow.com/a/35880094/1311716
+    preLoaders: [
+      { loader: 'string-replace',
+        test: /jquery\/src\/selector-sizzle\.js$/,
+        query: {
+          search: '../external/sizzle/dist/sizzle',
+          replace: 'sizzle'
+        }
+      }
+    ],
   },
   plugins: plugins,
 };
