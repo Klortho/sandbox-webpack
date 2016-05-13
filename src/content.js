@@ -1,2 +1,2 @@
-module.exports = "Drooper";
+module.exports = "Happy planets forever!";
 

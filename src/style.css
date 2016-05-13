@@ -1,3 +1,7 @@
 body {
-    background: blue;
+    h1: blue;
+    margin: 30px;
+    padding: 20px;
+    border: 2px solid gray;
+    border-radius: 10px;
 }

@@ -21,6 +21,7 @@
     "html-webpack-plugin": "^2.15.0",
     "lodash": "^4.6.1",
     "markdown-toc": "^0.12.5",
+    "watch": "^0.18.0",
     "webpack-dev-server": "^1.14.1"
   }
 }
